@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "c38e35ca-560d-4541-9368-dc7585c4b400",
+		"name": "test-prep",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"credentials\": {\n        \"email\": \"s@s.com\",\n        \"password\": \"foo\",\n        \"password_confirmation\": \"foo\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/sign-up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"credentials\": {\n        \"email\": \"s@s.com\",\n        \"password\": \"foo\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/sign-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change User Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "e915665866cf8a736fa8e231f99165d9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"passwords\": {\n        \"old\": \"foo\",\n        \"new\": \"foo\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signout User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "e915665866cf8a736fa8e231f99165d9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/sign-out",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"sign-out"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create An Empty Test Placeholder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Russian Grammar 1\",\n        \"description\": \"Basics\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/tests",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create A Test With One Question and Two Choices",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "e915665866cf8a736fa8e231f99165d9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Monty Python Trivia\",\n        \"description\": \"And now for something completely different\",\n        \"questions\": [\n            {\n                \"question\": {\n                    \"text\": \"What is your favorite color?\",\n                    \"type\": \"best\",\n                    \"choices\": [\n                        {\n                            \"choice\": {\n                                \"text\": \"Red... no, blue!\",\n                                \"isAnswer\": true\n                            }\n                        },\n                        {\n                            \"choice\": {\n                                \"text\": \"green\",\n                                \"isAnswer\": false\n                            }\n                        }                        \n                    ]\n                }\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/tests",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tests (Index - No Token Required)",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4741/tests",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Single Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4741/tests/5f974e18a748a338af6ded91",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests",
+						"5f974e18a748a338af6ded91"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update A Test",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0dafbb10-90ea-4587-b440-f4753fe570ce",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Python Basics 3\",\n        \"description\": \"Lists and strings.\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/tests/5f974e18a748a338af6ded91",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests",
+						"5f974e18a748a338af6ded91"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Test",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4741/tests/5f974e18a748a338af6ded91",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests",
+						"5f974e18a748a338af6ded91"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
