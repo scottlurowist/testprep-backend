@@ -24,29 +24,24 @@ const testSchema = new mongoose.Schema({
   // A test has zero or more questions. Questions have 1 or more choices.
   // One or more choices may be correct.
   "questions": [{
-    "question": {
+    "text": {
+      type: String,
+      required: true
+    }, 
+    "type": {
+      type: String,
+      required: true
+    },
+    "choices": [{
       "text": {
         type: String,
         required: true
-      }, 
-      "type": {
-        type: String,
-        required: true
       },
-        
-      "choices": [{
-        "choice": {
-          "text": {
-            type: String,
-            required: true
-          },
-          "isAnswer": {
-            type:Boolean,
-            required: true
-          }
-        }
-      }]
-    }
+      "isAnswer": {
+        type:Boolean,
+        required: true
+      }
+    }]
   }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -56,7 +51,7 @@ const testSchema = new mongoose.Schema({
 }, 
 {
   timestamps: true
-})
+});
 
 
 module.exports = mongoose.model('Test', testSchema);
