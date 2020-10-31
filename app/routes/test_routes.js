@@ -48,11 +48,11 @@ const router = express.Router();
 // CREATE
 // POST /tests
 // TODO: REMOVE COMMENT FOR REQUIRETOKEN.
-router.post('/tests', /*requireToken,*/ (req, res, next) => {
+router.post('/tests', requireToken, (req, res, next) => {
   // set owner of new example to be current user
-  //req.body.test.owner = req.user.id
+  req.body.owner = req.user.id;
 
-  Test.create(req.body.test)
+  Test.create(req.body)
     // respond to succesful `create` with status 201 and JSON of new "example"
     .then(test => {
       res.status(201).json({ test: test.toObject() })
@@ -122,10 +122,10 @@ router.get('/tests/:id', /*requireToken,*/ (req, res, next) => {
 // UPDATE
 // PATCH /examples/5a7db6c74d55bc51bdf39793
 // TODO: REMOVE COMMENT FOR REQUIRETOKEN.
-router.patch('/tests/:id', /*requireToken,*/ removeBlanks, (req, res, next) => {
+router.patch('/tests/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  req.body.test.owner = req.user.id
+  //req.body.owner = req.user.id
 
   Test.findById(req.params.id)
     .then(handle404)
