@@ -83,7 +83,7 @@ router.get('/tests/', requireToken, (req, res, next) => {
 });
 
 
-router.get('/tests/:email', requireToken, (req, res, next) => {
+router.get('/tests/mytests/:email', requireToken, (req, res, next) => {
   
   const email = req.params.email;
 
