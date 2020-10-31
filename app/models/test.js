@@ -21,6 +21,10 @@ const testSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   // A test has zero or more questions. Questions have 1 or more choices.
   // One or more choices may be correct.
   "questions": [{
@@ -42,12 +46,7 @@ const testSchema = new mongoose.Schema({
         required: true
       }
     }]
-  }],
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: false
-  }
+  }]
 }, 
 {
   timestamps: true

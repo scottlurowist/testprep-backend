@@ -67,13 +67,35 @@ router.post('/tests', /*requireToken,*/ (req, res, next) => {
 // INDEX
 // GET /examples
 // TODO: REMOVE COMMENT FOR REQUIRETOKEN.
-router.get('/tests', /*requireToken,*/ (req, res, next) => {
+router.get('/tests/', requireToken, (req, res, next) => {
+  
   Test.find()
     .then(tests => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
       // apply `.toObject` to each one
       return tests.map(test => test.toObject());
+    })
+    // respond with status 200 and JSON of the examples
+    .then(tests => res.status(200).json({ tests: tests }))
+    // if an error occurs, pass it to the handler
+    .catch(next);
+});
+
+
+router.get('/tests/:email', requireToken, (req, res, next) => {
+  
+  const email = req.params.email;
+
+  Test.find()
+    .populate('owner')
+    .then(tests => {
+      return tests.map(test => test.toObject());
+    })
+    // Now that we have PJOJs, we can filter on email 
+    // adress.
+    .then(tests => {
+      return tests.filter(test => test.owner.email === email)
     })
     // respond with status 200 and JSON of the examples
     .then(tests => res.status(200).json({ tests: tests }))
@@ -103,7 +125,7 @@ router.get('/tests/:id', /*requireToken,*/ (req, res, next) => {
 router.patch('/tests/:id', /*requireToken,*/ removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.test.owner;
+  req.body.test.owner = req.user.id
 
   Test.findById(req.params.id)
     .then(handle404)
@@ -111,10 +133,10 @@ router.patch('/tests/:id', /*requireToken,*/ removeBlanks, (req, res, next) => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
       // TODO: REMOVE COMMENT BEFORE FLIGHT.
-      //requireOwnership(req, example)
+      requireOwnership(req, test);
 
       // pass the result of Mongoose's `.update` to the next `.then`
-      return test.updateOne(req.body.test);
+      return test.updateOne(req.body);
     })
     // if that succeeded, return 204 and no JSON
     .then(() => res.sendStatus(204))
