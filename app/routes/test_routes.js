@@ -148,7 +148,7 @@ router.patch('/tests/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
 // TODO: REMOVE COMMENT FOR REQUIRETOKEN.
-router.delete('/tests/:id', /*requireToken,*/ (req, res, next) => {
+router.delete('/tests/:id', requireToken, (req, res, next) => {
   Test.findById(req.params.id)
     .then(handle404)
     .then(test => {
