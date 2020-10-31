@@ -24,22 +24,23 @@ const testSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: false
   },
   // A test has zero or more questions. Questions have 1 or more choices.
   // One or more choices may be correct.
   "questions": [{
     "text": {
       type: String,
-      required: true
+      required: false
     }, 
     "type": {
       type: String,
-      required: true
+      required: false
     },
     "choices": [{
       "text": {
         type: String,
-        required: true
+        required: false
       },
       "isAnswer": {
         type:Boolean,
