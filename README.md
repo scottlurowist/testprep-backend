@@ -144,14 +144,12 @@ All data returned from API actions is formatted as JSON.
 ***
 
 ## Nice-to-haves / Technical Debt
-    - Add search by Tag functionality
-    - Add the ability to create profile pictures and bios
-    - Like and comment functionality on other people's posts.
-    - Be able to inject various strategy / adapters to support different cloud
-      providers. For example, we should be able to store images in AWS, Azure, Google Cloud,
-      or any other cloud providers.
-    - Improve the AWS security for our bucket.
-    - Fix the patch route. A Mongoose API that we are using is deprecated unless we configure something. This is a temp fix.    
+    - Eliminate magic numbers and strings.
+    - Refactoring
+    - I probably should pass something more abstract than a userclear's email as 
+      a parameter to a GET route for getting only that author's tests.  
+    - Investigate using the async / await syntax with Mongoose.js methods. I find this
+      to be a cleaner syntax.     
 
 ***
 
