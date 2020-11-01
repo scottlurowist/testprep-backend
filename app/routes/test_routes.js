@@ -47,26 +47,23 @@ const router = express.Router();
 
 // CREATE
 // POST /tests
-// TODO: REMOVE COMMENT FOR REQUIRETOKEN.
 router.post('/tests', requireToken, (req, res, next) => {
-  // set owner of new example to be current user
+
+  // "requireToken" is a reference to passport.authenticate. authenticate
+  // will add the "user" property to the request object which in turn
+  // allows us to set the owner property to the test.
   req.body.owner = req.user.id;
 
   Test.create(req.body)
-    // respond to succesful `create` with status 201 and JSON of new "example"
     .then(test => {
       res.status(201).json({ test: test.toObject() })
     })
-    // if an error occurs, pass it off to our error handler
-    // the error handler needs the error message and the `res` object so that it
-    // can send an error message back to the client
     .catch(next)
 });
 
 
 // INDEX
-// GET /examples
-// TODO: REMOVE COMMENT FOR REQUIRETOKEN.
+// GET /tests
 router.get('/tests/', requireToken, (req, res, next) => {
   
   Test.find()
@@ -83,6 +80,9 @@ router.get('/tests/', requireToken, (req, res, next) => {
 });
 
 
+// GET
+// GET /tests/mytests/s@s.com
+// Retrieves all tests owned by the user who has the email address.
 router.get('/tests/mytests/:email', requireToken, (req, res, next) => {
   
   const email = req.params.email;
@@ -92,47 +92,43 @@ router.get('/tests/mytests/:email', requireToken, (req, res, next) => {
     .then(tests => {
       return tests.map(test => test.toObject());
     })
-    // Now that we have PJOJs, we can filter on email 
-    // adress.
+    // Now that we have POJOs, we can filter on email 
+    // address.
     .then(tests => {
-      return tests.filter(test => test.owner.email === email)
+      return tests.filter(test => {
+        return test.owner.email === email
+      })
     })
-    // respond with status 200 and JSON of the examples
-    .then(tests => res.status(200).json({ tests: tests }))
-    // if an error occurs, pass it to the handler
+    .then(filteredTests => {
+      res.status(200).json({ tests: filteredTests }
+    )})
     .catch(next);
 });
 
 
 // SHOW
-// GET /examples/5a7db6c74d55bc51bdf39793
-// TODO: REMOVE COMMENT FOR REQUIRETOKEN.
-router.get('/tests/:id', /*requireToken,*/ (req, res, next) => {
+// GET /tests/5a7db6c74d55bc51bdf39793
+router.get('/tests/:id', requireToken, (req, res, next) => {
   
-  // req.params.id will be set based on the `:id` in the route
   Test.findById(req.params.id)
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "example" JSON
     .then(test => res.status(200).json({ test: test.toObject() }))
-    // if an error occurs, pass it to the handler
     .catch(next);
 });
 
 
 // UPDATE
-// PATCH /examples/5a7db6c74d55bc51bdf39793
-// TODO: REMOVE COMMENT FOR REQUIRETOKEN.
+// PATCH /tests/5a7db6c74d55bc51bdf39793
 router.patch('/tests/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  //req.body.owner = req.user.id
+  delete req.body.owner
 
   Test.findById(req.params.id)
     .then(handle404)
     .then(test => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      // TODO: REMOVE COMMENT BEFORE FLIGHT.
       requireOwnership(req, test);
 
       // pass the result of Mongoose's `.update` to the next `.then`
@@ -146,14 +142,14 @@ router.patch('/tests/:id', requireToken, removeBlanks, (req, res, next) => {
 
 
 // DESTROY
-// DELETE /examples/5a7db6c74d55bc51bdf39793
-// TODO: REMOVE COMMENT FOR REQUIRETOKEN.
+// DELETE /tests/5a7db6c74d55bc51bdf39793
 router.delete('/tests/:id', requireToken, (req, res, next) => {
   Test.findById(req.params.id)
     .then(handle404)
     .then(test => {
-      // throw an error if current user doesn't own `example`
-      //requireOwnership(req, example)
+      // throw an error if current user doesn't own `test`
+      requireOwnership(req, test)
+      
       // delete the example ONLY IF the above didn't throw
       test.deleteOne()
     })
