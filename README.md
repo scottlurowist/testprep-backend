@@ -1,203 +1,181 @@
-[![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
 
-# express-api-template
+# Testprep
 
-A template for starting projects with `express` as an API. Includes
-authentication and common middlewares.
+***
+
+This project represents the backend for a full stack application built upon the MERN stack. It is a
+generic testing app that can be used to create and take tests for interview prep, self-study,
+test preparation, or fun.
+
+When the user signs into the app, they land on the Take A Test view. Here they can see all tests created by all
+authors. They can select a test to take and take it.
+
+The "My Tests" link brings the user to a view that lists all the tests that the user has authored. The tests
+are organized by cards. The user can delete or edit tests by clicking the appropritate button within a given test
+card. If the user has yet to create tests, they will see a card that allows them to create a test. This card is
+always present regardless the number of cards.
+
+In the edit view, the user can always save their progress by clicking the "Submit" button. It works just as
+if you were editing a document with any office-style application. For this reason, input fields do not 
+clear on save.
+
+With the initial version of the app, you cannot order the questions. Questions are always presented in the order
+in which they are created. When you select the "Add Question" button, that question is appended to the 
+end of the list of questions. When you delete a question, the question is deleted in place.
+
+The initial version of the app also limits you to 4 choices for a given question. You can currently select
+the options for "select best" or "select all that apply". Changing these radio buttons changes whether 
+the choices have radio buttons or checkboxes as appropriate. Due to time constraints, this version of the app
+forces you to leave blank input fields if there are to be lesson than 4 choices.
+
+When taking tests, you will be presented with a list of tests that have at minimum one question and at least 
+two choices.
+
+***
+
+## Planning Story
+
+The first step in the process of planning the site was to identify the functionality of the site based on
+requirements and the user stories.  I created an ERD for the backend, and wireframes for the front end.
+I then developed a few routes but abandoned cURL scripts for Postman as I have been using Postman for
+years and I think it is a superior tool.
+
+I also designed the database schema. Because I have been using SQL for two decades, my first inclintation
+was to nomralize the database. But I realized that the data did not need to be normalized and fit into
+the noSQL way of thinking.
+
+A test has a name and a description and an owner. A test has zero or more questions, and each question has 
+a type that determines whether the question is a "select best" or a "Select all that apply". Each question
+has 4 choices. Each choice has a text property for the choice, and a boolean "isCorrect" property that indicates
+whether that choice is correct. 
+
+Therefore the Mongoose.js schema is a nested schema.
+
+I created 6 routes for test CRUD operation as described in the table `API End Points`.
+
+I was required to reduce the scope of the front end because I was sick for nearly two days of the project.
+
+I first created the basic "views" which I consider to be "pages" in an SPA. I consider this something like
+"roughing a house".
+
+I worked on the TakeTest view first and had that working. The bulk of the work was in the edit test view.
+There is very complicated state management, in particular because React.js does not like nested state.
+So I had to take nested MongoDB data and "flatten it" to state suitable for React.js. I had to do the 
+reverse on persisting tests back to MongoDB. The navigation buttons, and the delete button enable and
+disable for the appropriate situations. 
+
+I finally did an inital deployment to make sure that works and it was flawless. Afterwords, I tried
+to implement as much as I could to make the final due data. Styling was my lowest priority due to
+the time I lost due to illness.
+
+***
 
 ## Installation
+1. Clone the repository: [Backend Github Repository](https://github.com/scottlurowist/testprep-backend)
+2. In the root directory of the backend project, type `npm i` or `yarn install`.
+3. Type the following in the same root directory: `npm start` to start the server.
+4. Clone the repository: [Backend Github Repository](https://github.com/scottlurowist/testprep-frontend)
+5. In the root directory of the backend project, type `npm i`.
+6. Type the following in the same root directory: `npm start` to start the server.
 
-1. [Download](../../archive/master.zip) this template.
-1. Move the .zip file to your `sei/projects/` directory and Unzip it (creating a
-   folder) -- **NOTE:** if the folder was already unzipped, use the `mv` command
-   line to move it to the `sei/projects/` directory.
-1. Rename the directory from express-api-template -> your-app-name.
-1. Empty [`README.md`](README.md) and fill with your own content.
-1. Move into the new project and `git init`.
-1. Replace all instances of `'express-api-template'` with your app name.
-1. Install dependencies with `npm install`.
-1. Ensure that you have `nodemon` installed by running `npm install -g nodemon`.
-1. Ensure the API is functioning properly by running `npm run server`.
-1. Once everything is working, make an initial commit.
-1. Follow the steps in [express-api-deployment-guide](https://git.generalassemb.ly/ga-wdi-boston/express-api-deployment-guide)
+***
 
-## Structure
+## API End Points
 
-Dependencies are stored in [`package.json`](package.json).
+| Verb   | URI Pattern                    | Controller#Action            |
+|--------|--------------------------------|------------------------------|
+| POST   | `/sign-up`                     | `users#signup`               |
+| POST   | `/sign-in`                     | `users#signin`               |
+| DELETE | `/sign-out`                    | `users#signout`              |
+| PATCH  | `/change-password`             | `users#changepw`             |
+| GET*   | `/tests`                       | `tests#index`                |
+| GET**  | `/tests/:testid`               | `tests#single test`          |
+| GET*** | `/tests/mytests/:email`        | `tests#get all owned tests`  |
+| POST   | `/tests`                       | `tests#create`               |
+| PATCH  | `/tests/:id`                   | `tests#update a test`        |
+| DELETE | `/tests/:id`                   | `tests#delete a test`        |
 
-The most important file for understanding the structure of the template is
-`server.js`. This is where the actual Express `app` object is created, where
-the middlewares and routes are registered, and more. To register a routefile,
-follow the pattern established here with `exampleRoutes` and `userRoutes`. If
-you want to add any middlewares to your app, do that here.
+  * GET*   - Retrieves all tests by all authors.
+  * GET**  - Retrieves only tests authored by the authenticated user. 
+  * GET*** - Get all tests by author email.
 
-The `app` directory contains models and route files. Models are simply Mongoose
-models. To create your own, follow the patterns established in
-`app/models/example.js`. Route files are somewhat similar to controllers in
-Rails, but they cover more functionality, including serialization and deciding
-which HTTP verbs to accept and what to do with them.
+All data returned from API actions is formatted as JSON.
 
-The `config` directory holds just `db.js`, which is where you specify the name
-and URL of your database.
+***
 
-The `lib` directory is for code that will be used in other places in the
-application. The token authentication code is stored in `lib/auth.js`. The
-other files in `lib` deal with error handling. `custom_errors.js` is where all
-the different custom classes of errors are created. If you need some other kind
-of error message, you can add it here. There are also some functions defined
-here that are used elsewhere to check for errors. `lib/error_handler.js` is a
-function that will be used in all your `.catch`es. It catches errors, and sets
-the response status code based on what type of error got thrown.
+## User stories
+    * As a User I want to sign up so that I may create, update, delete, and take tests.
+    * As a User I want to sign in once I have created an account so that I may create,
+      update, delete, and take tests.
+    * As a signed in User I want to change my password so that I can ensure that my account
+      is secure.
+    * As a signed in User I want to sign out from the app so that my session is closed.
+    * As a signed in User I want to create a new test.
+    * As a signed in User I want to update a test that I own.
+    * As a signed in User I want to delete a test that I own.
+    * As a signed in User I want to take tests created by any test author.
 
-You probably will only need to interact with files in `app/models`,
-`app/routes`, and `server.js`. You'll need to edit `db/config.js` just once,
-to change the name of your app.
+***
 
-## Tasks
+## Technologies Used
+    1. HTML / CSS / SCSS
+    2. JavaScript
+    3. React.js / React DOM Router / React Boostrap
+    4. Node.js
+    5. Express.js
+    6. Mongoose.js
+    7. MongoDB
+    8. Passport JS
+    9. Bcrypt
 
-Instead of `grunt`, this template uses `npm` as a task runner. This is more
-conventional for modern Express apps, and it's handy because we'll definitely
-use `npm` anyway. These are the commands available:
+***
 
-| Command                | Effect                                                                                                      |
-|------------------------|-------------------------------------------------------------------------------------------------------------|
-| `npm run server`       | Starts a development server with `nodemon` that automatically refreshes when you change something.                                                                                         |
-| `npm test`             | Runs automated tests.                                                                                       |
-| `npm run debug-server` | Starts the server in debug mode, which will print lots of extra info about what's happening inside the app. |
+## Links
+  [Deployed Frontend](https:/scottlurowist.github.io/testprep-frontend/#/) <br>
+  [Deployed Backend](https://testprep-backend.herokuapp.com/) <br>
+  [Frontend Github Repository](https://github.com/scottlurowist/testprep-frontend)<br>
+  [Backend Github Repository](https://github.com/scottlurowist/testprep-backend)
 
-## API
+***
 
-Use this as the basis for your own API documentation. Add a new third-level
-heading for your custom entities, and follow the pattern provided for the
-built-in user authentication documentation.
+## Unsolved Problems
+  - I did not have any unsolved problems.
 
-Scripts are included in [`curl-scripts`](curl-scripts) to test built-in actions.
-Add your own scripts to test your custom API.
+***
 
-### Authentication
+## Nice-to-haves / Technical Debt
+    - Add search by Tag functionality
+    - Add the ability to create profile pictures and bios
+    - Like and comment functionality on other people's posts.
+    - Be able to inject various strategy / adapters to support different cloud
+      providers. For example, we should be able to store images in AWS, Azure, Google Cloud,
+      or any other cloud providers.
+    - Improve the AWS security for our bucket.
+    - Fix the patch route. A Mongoose API that we are using is deprecated unless we configure something. This is a temp fix.    
 
-| Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
-| POST   | `/sign-up`             | `users#signup`    |
-| POST   | `/sign-in`             | `users#signin`    |
-| PATCH  | `/change-password/` | `users#changepw`  |
-| DELETE | `/sign-out/`        | `users#signout`   |
+***
 
-#### POST /sign-up
+## ERD 
+<img src="design/ERD.png" 
+     width="60%" style="padding: 0 0 20px 0">
 
-Request:
+*** 
 
-```sh
-curl --include --request POST http://localhost:4741/sign-up \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
-    }
-  }'
-```
+## Wireframes
+<img src="design/landing_page.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/signin.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/change_password.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/create_update_delete_test.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/_create_update_delete_question.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/take_test_1.png" 
+     width="80%" style="padding: 0 0 20px 0">
+<img src="design/take_test_2.png" 
+     width="80%" style="padding: 0 0 20px 0">                    
 
-```sh
-curl-scripts/sign-up.sh
-```
 
-Response:
 
-```md
-HTTP/1.1 201 Created
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email"
-  }
-}
-```
-
-#### POST /sign-in
-
-Request:
-
-```sh
-curl --include --request POST http://localhost:4741/sign-in \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password"
-    }
-  }'
-```
-
-```sh
-curl-scripts/sign-in.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email",
-    "token": "33ad6372f795694b333ec5f329ebeaaa"
-  }
-}
-```
-
-#### PATCH /change-password/
-
-Request:
-
-```sh
-curl --include --request PATCH http://localhost:4741/change-password/ \
-  --header "Authorization: Bearer $TOKEN" \
-  --header "Content-Type: application/json" \
-  --data '{
-    "passwords": {
-      "old": "an example password",
-      "new": "super sekrit"
-    }
-  }'
-```
-
-```sh
-TOKEN=33ad6372f795694b333ec5f329ebeaaa curl-scripts/change-password.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-#### DELETE /sign-out/
-
-Request:
-
-```sh
-curl --include --request DELETE http://localhost:4741/sign-out/ \
-  --header "Authorization: Bearer $TOKEN"
-```
-
-```sh
-TOKEN=33ad6372f795694b333ec5f329ebeaaa curl-scripts/sign-out.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-## [License](LICENSE)
-
-1. All content is licensed under a CC­BY­NC­SA 4.0 license.
-1. All software code is licensed under GNU GPLv3. For commercial use or
-    alternative licensing, please contact legal@ga.co.
