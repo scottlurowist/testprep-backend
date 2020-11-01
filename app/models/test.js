@@ -2,7 +2,7 @@
 //
 // test.js
 //
-// This model represents a question for the testprep database.
+// This schema and model represents a question for the testprep database.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
