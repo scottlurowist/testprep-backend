@@ -24,13 +24,13 @@ Produce documentation on Github:
 
 Both front-end and back-end repos should include README's with:
 1.  ~~[ ] An explanation of the what the app does and how it works.~~
-1.  [ ] Complete the repository `Description` field and `Website` field with a meaningful sentence description of the application and link to the live URL
+1.  ~~[ ] Complete the repository `Description` field and `Website` field with a meaningful sentence    description of the application and link to the live URL~~
 ![github image](https://git.generalassemb.ly/storage/user/3667/files/beae41ae-aaaa-11e7-8867-63958d376a0b)
 1.  ~~[ ] A link to the other repo~~
 1.  ~~[ ] A link to both deployed sites~~
 1.  ~~[ ] List of technologies used~~
 1.  ~~[ ] List unsolved problems which would be fixed in future iterations.~~
-1. ~~ [ ] Document your planning, process and problem-solving strategy~~
+1. ~~[ ] Document your planning, process and problem-solving strategy~~
 
 Your front-end repo's README should also have:
 1.  ~~[ ] Link to wireframes and user stories~~
@@ -69,7 +69,7 @@ Your back-end repo's README should also have
 1.  ~~[ ]  Use Express or Django to build an API.~~
 1.  ~~[ ]  Create at least 4 RESTful routes for handling GET, POST, PUT/PATCH, and DELETE requests for a resource other than User.~~
 1.  ~~[ ]  Have at least 1 resource that has a relationship to User~~
-1.  [ ]  Any actions which change data must be authenticated and the data must be "owned" by the user performing the change or a user determined by an access control list
+1.  ~~[ ]  Any actions which change data must be authenticated and the data must be "owned" by the user performing the change or a user determined by an access control list~~
 
 ### DO NOT!!
 Your app **must not**:
