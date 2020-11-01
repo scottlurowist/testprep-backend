@@ -166,7 +166,7 @@
 			"response": []
 		},
 		{
-			"name": "Create A Test With One Question and Two Choices",
+			"name": "Update A Test With One Question and Two Choices",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -178,11 +178,11 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"test\": {\n        \"name\": \"Monty Python Trivia\",\n        \"description\": \"And now for something completely different\",\n        \"questions\": [\n            {\n                \"question\": {\n                    \"text\": \"What is your favorite color?\",\n                    \"type\": \"best\",\n                    \"choices\": [\n                        {\n                            \"choice\": {\n                                \"text\": \"Red... no, blue!\",\n                                \"isAnswer\": true\n                            }\n                        },\n                        {\n                            \"choice\": {\n                                \"text\": \"green\",\n                                \"isAnswer\": false\n                            }\n                        }                        \n                    ]\n                }\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Monty Python Trivia\",\n        \"description\": \"And now for something completely different\",\n        \"questions\": [\n            {\n                \"text\": \"What is your favorite color?\",\n                \"type\": \"selectBest\",\n                \"choices\": [\n                    {\n                        \"text\": \"Red... no, blue!\",\n                        \"isAnswer\": true\n                    },\n                    {\n                        \"text\": \"green\",\n                        \"isAnswer\": false\n                    },\n                                        {\n                        \"text\": \"\",\n                        \"isAnswer\": false\n                    },\n                    {\n                        \"text\": \"\",\n                        \"isAnswer\": false\n                    }\n                ]\n            },\n            {\n                \"text\": \"I'm a lumber jack and I'm ____\",\n                \"type\": \"selectAllThatApply\",\n                \"choices\": [\n                    {\n                        \"text\": \"sad\",\n                        \"isAnswer\": false\n                    },\n                    {\n                        \"text\": \"OK\",\n                        \"isAnswer\": true\n                    },\n                                        {\n                        \"text\": \"\",\n                        \"isAnswer\": false\n                    },\n                    {\n                        \"text\": \"\",\n                        \"isAnswer\": false\n                    }\n                ]\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -190,14 +190,54 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4741/tests",
+					"raw": "http://localhost:4741/tests/5f994283d9821d27f377fb36",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "4741",
 					"path": [
-						"tests"
+						"tests",
+						"5f994283d9821d27f377fb36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update A Test With Just a Test Name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "e915665866cf8a736fa8e231f99165d9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Russian Grammar 1\",\n        \"description\": \"Basics\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/tests/5f994283d9821d27f377fb36",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests",
+						"5f994283d9821d27f377fb36"
 					]
 				}
 			},
@@ -321,6 +361,45 @@
 					"path": [
 						"tests",
 						"5f974e18a748a338af6ded91"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create A New Test With Just a Test Name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "e915665866cf8a736fa8e231f99165d9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test\": {\n        \"name\": \"Russian Grammar 1\",\n        \"description\": \"Basics\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4741/tests/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4741",
+					"path": [
+						"tests",
+						""
 					]
 				}
 			},
