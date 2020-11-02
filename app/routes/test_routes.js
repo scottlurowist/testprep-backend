@@ -67,6 +67,7 @@ router.post('/tests', requireToken, (req, res, next) => {
 router.get('/tests/', requireToken, (req, res, next) => {
   
   Test.find()
+    .populate('owner')
     .then(tests => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
