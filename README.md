@@ -3,6 +3,14 @@
 
 ***
 
+## Links
+  [Deployed Frontend](https:/scottlurowist.github.io/testprep-frontend/#/) <br>
+  [Deployed Backend](https://testprep-backend.herokuapp.com/) <br>
+  [Frontend Github Repository](https://github.com/scottlurowist/testprep-frontend)<br>
+  [Backend Github Repository](https://github.com/scottlurowist/testprep-backend)
+
+***
+
 This project represents the backend for a full stack application built upon the MERN stack. It is a
 generic testing app that can be used to create and take tests for interview prep, self-study,
 test preparation, or fun.
@@ -127,14 +135,6 @@ All data returned from API actions is formatted as JSON.
     7. MongoDB
     8. Passport JS
     9. Bcrypt
-
-***
-
-## Links
-  [Deployed Frontend](https:/scottlurowist.github.io/testprep-frontend/#/) <br>
-  [Deployed Backend](https://testprep-backend.herokuapp.com/) <br>
-  [Frontend Github Repository](https://github.com/scottlurowist/testprep-frontend)<br>
-  [Backend Github Repository](https://github.com/scottlurowist/testprep-backend)
 
 ***
 
