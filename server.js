@@ -24,15 +24,6 @@ const auth = require("./lib/auth");
 const serverDevPort = 4741;
 const clientDevPort = 7165;
 
-// establish database connection
-// use new version of URL parser
-// use createIndex instead of deprecated ensureIndex
-mongoose.connect(db, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
-
 // instantiate express application object
 const app = express();
 
@@ -81,6 +72,7 @@ mongoose
   .connect(db, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useUnifiedTopology: true,
   })
   .then((result) => {
     app.listen(port, () => {
